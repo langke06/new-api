@@ -8,6 +8,9 @@ ARG TARGETOS
 ARG TARGETARCH
 ENV GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH:-amd64}
 ENV GOEXPERIMENT=greenteagc
+# --build-arg GOPROXY="" 可回退到官方 proxy.golang.org
+ARG GOPROXY=https://goproxy.cn,direct
+ENV GOPROXY=${GOPROXY}
 
 WORKDIR /build
 
@@ -27,7 +30,8 @@ RUN go build -ldflags "-s -w -X 'github.com/QuantumNous/new-api/common.Version=$
 
 FROM debian:bookworm-slim
 
-RUN apt-get update \
+RUN sed -i 's@deb.debian.org@mirrors.aliyun.com@g; s@security.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources \
+    && apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates tzdata wget \
     && rm -rf /var/lib/apt/lists/* \
     && update-ca-certificates
