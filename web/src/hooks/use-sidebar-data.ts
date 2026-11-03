@@ -27,6 +27,7 @@ import {
   LayoutDashboard,
   ListTodo,
   MessageSquare,
+  MonitorPlay,
   PlugZap,
   Radio,
   ServerCog,
@@ -156,6 +157,12 @@ export function useSidebarData(badges: SidebarBadges = {}): SidebarData {
             title: t('Subscriptions'),
             url: '/subscriptions',
             icon: CreditCard,
+          },
+          {
+            title: t('Data Kiosk'),
+            url: '/kiosk',
+            icon: MonitorPlay,
+            requiredRole: ROLE.ADMIN,
           },
           {
             title: t('System Info'),

@@ -355,6 +355,10 @@ func SetApiRouter(router *gin.Engine) {
 		dataRoute.GET("/flow", middleware.AdminAuth(), controller.GetAllFlowQuotaDates)
 		dataRoute.GET("/flow/self", middleware.UserAuth(), controller.GetUserFlowQuotaDates)
 
+		kioskRoute := apiRouter.Group("/kiosk")
+		kioskRoute.Use(middleware.DisableCache())
+		kioskRoute.GET("/overview", middleware.AdminAuth(), controller.GetKioskOverview)
+
 		logRoute.Use(middleware.CORS(), middleware.CriticalRateLimit())
 		{
 			logRoute.GET("/token", middleware.TokenAuthReadOnly(), controller.GetLogByKey)
